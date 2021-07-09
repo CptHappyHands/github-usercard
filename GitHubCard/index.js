@@ -40,12 +40,28 @@ import axios from 'axios'
     user, and adding that card to the DOM.
 */
 
-const followersArray = ['tetondan', 
-  'dustinmyers', 
-  'justsml', 
-  'luishrd', 
-  'bigknell'];
-
+// const followersArray = [];
+// axios.get('http://api.github.com/users/dustinmyers/followers')
+// .then(response => {
+//   response.data.forEach(obj => {
+//     followersArray.push(obj.login)
+//   })
+//   return followersArray
+// })
+// .then(names => {
+//   followersArray.forEach(name => {
+//     axios.get(`https://api.github.com/users/${name}`)
+//     .then(res => {
+//       target.appendChild(cardMaker(response.data))
+//     })
+//     .catch(err => {
+//       console.log(err)
+//     })
+//     .finally(() => {
+//       console.log('done')
+//     })
+//   })
+// })
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
     Using DOM methods and properties, create and return the following markup:
@@ -81,7 +97,7 @@ function cardMaker(obj) {
   name.textContent = `Andrew Cummings`
   img.src = `${obj.avatar_url}`
   userName.textContent = `${obj.login}`
-  location.textContent = `Location: Joplin, MO`
+  location.textContent = `Joplin, MO`
   address.href = obj.html_url
   address.innerHTML =`GitHub`
   followers.textContent = `Followers: ${obj.followers}`
@@ -118,6 +134,7 @@ axios.get(`https://api.github.com/users/CptHappyHands`)
   })
   .catch(err => console.log(err.message))
   .finally(() => console.log('done'))
+
 /*
   List of LS Instructors Github username's:
     tetondan
@@ -126,20 +143,42 @@ axios.get(`https://api.github.com/users/CptHappyHands`)
     luishrd
     bigknell
 */
-function getFollowers(friendName) {
-  
-  axios.get(`https://api.github.com/users/${friendName[0]}`)
-  .then(response => {
-    response.data.forEach(obj => {
-      const newCard = cardMaker(obj)
-      target.appendChild(newCard)
+// function getFollowers(friendName) {
+//   axios.get(`https://api.github.com/users/${friendName}`)
+//   .then(response => {
+//     response.data.forEach(obj => {
+//       const newCard = cardMaker(obj)
+//       target.appendChild(newCard)
+//     })
+//   })
+//   .catch(err => {
+//     console.log(err)
+//   })
+//   .finally(() => {
+//     console.log('done')
+//   })
+// }
+// getFollowers(followersArray)
+
+const followersArray = [];
+axios.get('http://api.github.com/users/dustinmyers/followers')
+.then(response => {
+  response.data.forEach(obj => {
+    followersArray.push(obj.login)
+  })
+  return followersArray
+})
+.then(names => {
+  followersArray.forEach(name => {
+    axios.get(`https://api.github.com/users/${name}`)
+    .then(response => {
+      target.appendChild(cardMaker(response.data))
+    })
+    .catch(err => {
+      console.log(err.message)
+    })
+    .finally(() => {
+      console.log('done')
     })
   })
-  .catch(err => {
-    console.log(err)
-  })
-  .finally(() => {
-    console.log('done')
-  })
-}
-getFollowers(followersArray)
+})
